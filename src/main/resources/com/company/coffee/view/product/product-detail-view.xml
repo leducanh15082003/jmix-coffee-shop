@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://productDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="productDc"
+                  class="com.company.coffee.entity.Product">
+            <fetchPlan extends="_base">
+                <property name="discount" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="productDl"/>
+        </instance>
+        <collection id="discountsDc" class="com.company.coffee.entity.Discount">
+            <fetchPlan extends="_base"/>
+            <loader id="discountsDl">
+                <query>
+                    <![CDATA[select e from Discount e where e.type = 'PRODUCT']]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="productDc">
+            <responsiveSteps>
+                <responsiveStep minWidth="0" columns="1"/>
+                <responsiveStep minWidth="40em" columns="2"/>
+            </responsiveSteps>
+            <textField id="nameField" property="name"/>
+            <textField id="priceField" property="price"/>
+            <entityComboBox id="discountField"
+                            property="discount"
+                            itemsContainer="discountsDc"> <actions>
+                <action id="entityClearAction" type="entity_clear"/>
+            </actions>
+            </entityComboBox>
+        </formLayout>
+        <hbox id="detailActions">
+            <button id="saveAndCloseButton" action="saveAction"/>
+            <button id="closeButton" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

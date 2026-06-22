@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://orderDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="orderDc" class="com.company.coffee.entity.Order">
+            <fetchPlan extends="_base">
+                <property name="links" fetchPlan="_base">
+                    <property name="product" fetchPlan="_base"/>
+                </property>
+                <property name="discount" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="orderDl"/>
+            <collection id="linksDc" property="links"/>
+        </instance>
+
+        <collection id="discountsDc" class="com.company.coffee.entity.Discount">
+            <fetchPlan extends="_base"/>
+            <loader id="discountsDl">
+                <query>
+                    <![CDATA[select e from Discount e where e.type = 'TOTAL']]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="orderDc">
+            <responsiveSteps>
+                <responsiveStep minWidth="0" columns="1"/>
+                <responsiveStep minWidth="40em" columns="2"/>
+            </responsiveSteps>
+            <textField id="customer_phoneField" property="customer_phone" readOnly="true"/>
+
+            <entityComboBox id="discountField"
+                            property="discount"
+                            itemsContainer="discountsDc"
+                            label="Apply Discount (Bill)"/>
+
+            <textField id="totalField" property="total" readOnly="true"/>
+
+            <dataGrid id="linksTable" dataContainer="linksDc" width="100%" minHeight="20em" colspan="2">
+                <columns>
+                    <column property="product.name" header="Product"/>
+                    <column property="product.price" header="Price"/>
+                    <column property="product.discount.percentage" header="Discount (%)"/>
+                    <column property="quantity" header="Quantity"/>
+                </columns>
+            </dataGrid>
+        </formLayout>
+        <hbox id="detailActions">
+            <button id="saveAndCloseButton" action="saveAction"/>
+            <button id="closeButton" action="closeAction"/>
+            <button id="confirmOrder" text="Confirm Order" themeNames="primary success"/>
+        </hbox>
+    </layout>
+</view>

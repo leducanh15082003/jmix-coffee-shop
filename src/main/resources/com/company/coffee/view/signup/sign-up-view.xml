@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://SignUpView.title">
+
+    <layout>
+        <formLayout id="signup">
+            <textField id="usernameField" label="Username" minLength="6" maxLength="15" required="true"/>
+            <textField id="phoneField" label="Phone" maxLength="10">
+                <validators>
+                    <regexp
+                            regexp="^0[0-9]{9}$"
+                            message="Phone number must begin with 0 and have 10 digits"/>
+                </validators>
+            </textField>
+            <emailField id="emailField" label="Email" required="false"/>
+            <passwordField id="passwordField" label="Password" required="true">
+                <validators>
+                    <regexp regexp="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                            message="Password must have 8 characters, both letter and number included"/>
+                </validators>
+            </passwordField>
+            <passwordField id="confirmPasswordField" label="Confirm Password" required="true"/>
+            <button id="signupBtn" text="Sign Up"/>
+        </formLayout>
+    </layout>
+
+</view>

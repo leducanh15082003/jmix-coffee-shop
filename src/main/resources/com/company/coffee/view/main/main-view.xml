@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<mainView xmlns="http://jmix.io/schema/flowui/main-view"
+          title="msg://MainView.title">
+    <data>
+        <collection id="discountsDc" class="com.company.coffee.entity.Discount">
+            <fetchPlan extends="_base"/>
+            <loader id="discountsDl">
+                <query>
+                    <![CDATA[select e from Discount e order by e.percentage desc]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="logoutAction" type="logout"/>
+    </actions>
+    <appLayout>
+        <navigationBar>
+            <header id="header" classNames="jmix-main-view-header">
+                <drawerToggle id="drawerToggle"
+                              classNames="jmix-main-view-drawer-toggle"
+                              themeNames="contrast"
+                              ariaLabel="msg://drawerToggle.ariaLabel"/>
+                <h1 id="viewTitle" classNames="jmix-main-view-title"/>
+            </header>
+        </navigationBar>
+        <drawerLayout>
+            <section id="section" classNames="jmix-main-view-section">
+                <h2 id="applicationTitle"
+                    classNames="jmix-main-view-application-title">
+                    <anchor id="baseLink"
+                            href="."
+                            text="msg://applicationTitle.text"
+                            classNames="jmix-main-view-application-title-base-link"/>
+                </h2>
+                <nav id="navigation"
+                     classNames="jmix-main-view-navigation"
+                     ariaLabel="msg://navigation.ariaLabel">
+                    <listMenu id="menu"/>
+                </nav>
+                <footer id="footer" classNames="jmix-main-view-footer">
+                    <userIndicator id="userIndicator"/>
+                    <button id="logoutButton"
+                            action="logoutAction"
+                            classNames="jmix-logout-button"/>
+                </footer>
+            </section>
+        </drawerLayout>
+        <initialLayout>
+            <vbox id="adminDashboardHeader" visible="false">
+                <h1 text="Welcome to Admin Dashboard" classNames="text-primary"/>
+                <span text="Admin system for Coffee Shop."/>
+            </vbox>
+
+            <vbox id="customerPromotionArea" width="100%" maxWidth="50em" visible="false">
+                <h2 text="🎁 On going discounts"/>
+
+                <dataGrid id="activeDiscountsGrid"
+                          width="100%"
+                          dataContainer="discountsDc"
+                          columnReorderingAllowed="false">
+                    <columns>
+                        <column property="name" header="Discount program name"/>
+                        <column property="percentage" header="Discount (%)"/>
+                        <column property="type" header="Discount type"/>
+                    </columns>
+                </dataGrid>
+                <button text="Order Now" id="orderRedirect" themeNames="primary large"/>
+            </vbox>
+
+        </initialLayout>
+    </appLayout>
+</mainView>

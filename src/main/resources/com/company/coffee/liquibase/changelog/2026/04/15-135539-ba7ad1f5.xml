@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="coffee">
+        <dropColumn columnName="PERCENTAGE" tableName="DISCOUNT"/>
+    </changeSet>
+    <changeSet id="2" author="coffee">
+        <addColumn tableName="DISCOUNT">
+            <column name="PERCENTAGE" type="DECIMAL"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="3" author="coffee">
+        <dropColumn columnName="PRICE" tableName="PRODUCT"/>
+    </changeSet>
+    <changeSet id="4" author="coffee">
+        <addColumn tableName="PRODUCT">
+            <column name="PRICE" type="DECIMAL"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="5" author="coffee">
+        <dropColumn columnName="TOTAL" tableName="DRAFT_ORDER"/>
+    </changeSet>
+    <changeSet id="6" author="coffee">
+        <addColumn tableName="DRAFT_ORDER">
+            <column name="TOTAL" type="DECIMAL"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="7" author="coffee">
+        <dropColumn columnName="TOTAL" tableName="ORDER_"/>
+    </changeSet>
+    <changeSet id="8" author="coffee">
+        <addColumn tableName="ORDER_">
+            <column name="TOTAL" type="DECIMAL"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>
