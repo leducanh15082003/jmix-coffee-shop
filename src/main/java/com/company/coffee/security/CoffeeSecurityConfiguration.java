@@ -1,16 +1,21 @@
 package com.company.coffee.security;
 
 import io.jmix.core.JmixSecurityFilterChainOrder;
+import io.jmix.core.session.SessionProperties;
 import io.jmix.securityflowui.security.FlowuiVaadinWebSecurity;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.session.InMemoryReactiveSessionRegistry;
 import org.springframework.security.core.session.ReactiveSessionRegistry;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.session.SessionLimit;
+import org.springframework.security.web.authentication.session.*;
+
+import java.util.List;
 
 /**
  * This configuration complements standard security configurations that come from Jmix modules (security-flowui, oidc,
@@ -51,4 +56,18 @@ public class CoffeeSecurityConfiguration {
         return http.build();
     }
 
+    @Bean("demo_sessionControlAuthenticationStrategy")
+    @Primary
+    public SessionAuthenticationStrategy sessionControlAuthenticationStrategy(SessionRegistry sessionRegistry,
+                                                                              SessionProperties sessionProperties) {
+        ConcurrentSessionControlAuthenticationStrategy concurrentSessionControlStrategy =
+                new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry);
+        concurrentSessionControlStrategy.setMaximumSessions(sessionProperties.getMaximumSessionsPerUser());
+
+        RegisterSessionAuthenticationStrategy registerSessionStrategy =
+                new RegisterSessionAuthenticationStrategy(sessionRegistry);
+
+        return new CompositeSessionAuthenticationStrategy(
+                List.of(concurrentSessionControlStrategy, registerSessionStrategy));
+    }
 }
